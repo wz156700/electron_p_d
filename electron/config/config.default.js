@@ -31,14 +31,14 @@ module.exports = (appInfo) => {
   };
 
   /**
-   * 应用程序顶部菜单
-   */
-  config.openAppMenu = 'dev-show';
-  
-  /**
    * 开发者工具
    */
   config.openDevTools = false;
+
+  /**
+   * 应用程序顶部菜单
+   */
+  config.openAppMenu = 'dev-show';
 
   /**
    * 主窗口
@@ -46,7 +46,7 @@ module.exports = (appInfo) => {
   config.windowsOption = {
     title: 'EE框架',
     width: 980,
-    height: 650,
+    height: 750,
     minWidth: 800,
     minHeight: 650,
     webPreferences: {

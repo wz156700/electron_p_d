@@ -1,14 +1,16 @@
 <template>
   <a-layout id="app-layout-sider">
-    <a-layout-sider
-      v-model="collapsed"
-      theme="light"
-      class="layout-sider"
-    >
+    <a-layout-sider v-model="collapsed" theme="light" class="layout-sider">
       <div class="logo">
-        <img class="pic-logo" src="~@/assets/logo.png">
+        <img class="pic-logo" src="~@/assets/logo.png" />
       </div>
-      <a-menu class="menu-item" theme="light" mode="inline" :default-selected-keys="[default_key]" @click="menuHandle">
+      <a-menu
+        class="menu-item"
+        theme="light"
+        mode="inline"
+        :default-selected-keys="[default_key]"
+        @click="menuHandle"
+      >
         <a-menu-item v-for="(menuInfo, index) in menu" :key="index">
           <a-icon :type="menuInfo.icon" />
           {{ menuInfo.title }}
@@ -24,51 +26,50 @@
 </template>
 <script>
 export default {
-  name: 'AppSider',
+  name: "AppSider",
   data() {
     return {
       collapsed: true,
-      default_key: 'menu_1',
-      current: '',
+      default_key: "menu_1",
+      current: "",
       menu: {
-        'menu_1' : {
-          icon: 'home',
-          title: '框架',
-          pageName: 'Framework',
+        menu_1: {
+          icon: "home",
+          title: "加载信息",
+          pageName: "loadingMessage",
           params: {},
         },
-        'menu_2' : {
-          icon: 'desktop',
-          title: '系统',
-          pageName: 'Os',
+        menu_2: {
+          icon: "home",
+          title: "设置",
+          pageName: "setting",
           params: {},
         },
-        'menu_3' : {
-          icon: 'control',
-          title: '硬件',
-          pageName: 'Hardware',
+        menu_3: {
+          icon: "home",
+          title: "硬件设备测试",
+          pageName: "Example",
           params: {},
         },
-        'menu_4' : {
-          icon: 'bulb',
-          title: '特效',
-          pageName: 'Effect',
+        menu_4: {
+          icon: "home",
+          title: "窗口管理助手",
+          pageName: "Example",
           params: {},
-        },            
-      }
+        },
+      },
     };
   },
-  created () {
-  },
-  mounted () {
-    this.menuHandle()
+  created() {},
+  mounted() {
+    this.menuHandle();
   },
   methods: {
-    menuHandle (e) {
+    menuHandle(e) {
       this.current = e ? e.key : this.default_key;
-      const linkInfo = this.menu[this.current]
-      console.log('[home] load page:', linkInfo.pageName);
-      this.$router.push({ name: linkInfo.pageName, params: linkInfo.params})
+      const linkInfo = this.menu[this.current];
+      console.log("[home] load page:", linkInfo.pageName);
+      this.$router.push({ name: linkInfo.pageName, params: linkInfo.params });
     },
   },
 };
@@ -86,8 +87,19 @@ export default {
     margin: 10px;
   }
   .layout-sider {
+    width: 130px !important;
+    max-width: 300px !important;
+    flex: 0 0 auto !important;
     border-top: 1px solid #e8e8e8;
     border-right: 1px solid #e8e8e8;
+    .ant-menu-inline-collapsed {
+      width: 80%;
+      margin: 0 10%;
+      border-right: none;
+      .ant-menu-item {
+        text-align: left;
+      }
+    }
   }
   .menu-item {
     .ant-menu-item {
@@ -98,7 +110,7 @@ export default {
     }
   }
   .layout-content {
-    //background-color: #fff;
+    background-color: #fff;
   }
 }
 </style>
