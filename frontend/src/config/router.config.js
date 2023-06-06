@@ -30,8 +30,23 @@ export const constantRouterMap = [
             name: 'setting',
             component: () => import('@/views/pro/setting/index')
           },
+          {
+            path: '/pro/equipment',
+            name: 'equipment',
+            component: () => import('@/views/pro/equipment/index')
+          },
+          // {
+          //   path: '/pro/winMana',
+          //   name: 'winMana',
+          //   component: () => import('@/views/pro/windowManagement/index')
+          // },
         ]
       },
     ]
+  },
+  {
+    path: '/winMana',
+    name: 'winMana',
+    component: () => import('@/views/pro/windowManagement/index')
   }
 ]

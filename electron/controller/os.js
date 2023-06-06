@@ -138,7 +138,7 @@ class OsController extends Controller {
       // some
     }
 
-    console.log('contentUrl: ', contentUrl);
+    console.log('contentUrl123: ', contentUrl);
     let opt = {
       title: windowTitle
     }

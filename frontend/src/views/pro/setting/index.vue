@@ -7,10 +7,10 @@
     <section>
       <a-form-model
         ref="ruleForm"
-        :model="form"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
-        :rules="rule"
+        :model="form"
+        :rules="rules"
       >
         <a-form-model-item label="开机自启">
           <a-radio-group v-model="form.autoStart">
@@ -22,8 +22,13 @@
           <a-form-model-item
             label="启动端口"
             :wrapper-col="{ span: 14, offset: 0 }"
+            prop="startPort"
           >
-            <a-input v-model="form.startPort" :allowClear="true" />
+            <a-input
+              :value="form.startPort"
+              :allowClear="true"
+              @change="startPortChange"
+            />
             <a-checkbox v-model="form.defaultStart"> 默认启动 </a-checkbox>
           </a-form-model-item>
         </section>
@@ -73,13 +78,13 @@ export default {
         pauseApp: undefined,
         queueApp: undefined,
       },
-      rule: {
+      rules: {
         startPort: [
           {
             type: "number",
             required: true,
             message: "输入内容必须是数字",
-            trigger: "blur",
+            trigger: "change",
           },
         ],
       },
@@ -88,8 +93,9 @@ export default {
   methods: {
     //保存
     onSubmit() {
-      console.log("submit!", this.form);
+      //校验
       this.$refs.ruleForm.validate((valid) => {
+        console.log(this.form);
         if (valid) {
           alert("submit!");
         } else {
@@ -100,6 +106,7 @@ export default {
     },
     // 取消
     oncancel() {
+      this.$refs.ruleForm.resetFields();
       for (let key in this.form) {
         if (Object.hasOwnProperty.call(this.form, key)) {
           if (key == "autoStart") {
@@ -110,6 +117,15 @@ export default {
             this.form[key] = undefined;
           }
         }
+      }
+    },
+
+    startPortChange(e) {
+      let value = e.target.value;
+      if (!isNaN(new Number(value))) {
+        this.form.startPort = parseInt(80);
+      } else {
+        this.form.startPort = value;
       }
     },
   },

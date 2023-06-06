@@ -25,6 +25,7 @@
   </a-layout>
 </template>
 <script>
+import { ipcApiRoute, specialIpcRoute } from "@/api/main";
 export default {
   name: "AppSider",
   data() {
@@ -48,16 +49,24 @@ export default {
         menu_3: {
           icon: "home",
           title: "硬件设备测试",
-          pageName: "Example",
+          pageName: "equipment",
           params: {},
         },
         menu_4: {
           icon: "home",
           title: "窗口管理助手",
-          pageName: "Example",
+          pageName: "windowManagement",
           params: {},
         },
       },
+      views: [
+        {
+          type: "vue",
+          content: "/#/winMana",
+          windowName: "window-ipc",
+          windowTitle: "窗口管理助手",
+        },
+      ],
     };
   },
   created() {},
@@ -68,8 +77,19 @@ export default {
     menuHandle(e) {
       this.current = e ? e.key : this.default_key;
       const linkInfo = this.menu[this.current];
-      console.log("[home] load page:", linkInfo.pageName);
-      this.$router.push({ name: linkInfo.pageName, params: linkInfo.params });
+      if (linkInfo.pageName == "windowManagement") {
+        this.createWindow("0");
+      } else {
+        console.log("[home] load page:", linkInfo.pageName);
+        this.$router.push({ name: linkInfo.pageName, params: linkInfo.params });
+      }
+    },
+    createWindow(index) {
+      this.$ipc
+        .invoke(ipcApiRoute.createWindow, this.views[index])
+        .then((id) => {
+          console.log("[createWindow] id:", id);
+        });
     },
   },
 };
