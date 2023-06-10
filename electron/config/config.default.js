@@ -38,15 +38,15 @@ module.exports = (appInfo) => {
   /**
    * 应用程序顶部菜单
    */
-  config.openAppMenu = 'dev-show';
+  config.openAppMenu =true;
 
   /**
    * 主窗口
    */
   config.windowsOption = {
     title: 'EE框架',
-    width: 980,
-    height: 750,
+    width: 800,
+    height: 600,
     minWidth: 800,
     minHeight: 650,
     webPreferences: {

@@ -5,7 +5,7 @@ const path = require('path');
 const { Controller } = require('ee-core');
 const {
   app: electronApp, dialog, shell, Notification, 
-  powerMonitor, screen, nativeTheme
+  powerMonitor, screen, nativeTheme,BrowserWindow
 } = require('electron');
 const Conf = require('ee-core/config');
 const Ps = require('ee-core/ps');
@@ -17,7 +17,6 @@ const Addon = require('ee-core/addon');
  * @class
  */
 class OsController extends Controller {
-
   constructor(ctx) {
     super(ctx);
   }
@@ -120,7 +119,14 @@ class OsController extends Controller {
    * 打开新窗口
    */
   createWindow(args) {
-    const { type, content, windowName, windowTitle } = args;
+    const { type, content, windowName, windowTitle,windowId } = JSON.parse(args);
+    // 判断当前窗口是否已经创建
+    if (Addon.get('window').windowContentsIdMap.hasOwnProperty(windowName)) {
+      // const windows = BrowserWindow.getAllWindows()
+      // const ids = windows.map(item => item.getTitle());
+      // console.log(ids);
+      return;
+     }
     let contentUrl = null;
     if (type == 'html') {
       contentUrl = path.join('file://', electronApp.getAppPath(), content)
@@ -138,13 +144,26 @@ class OsController extends Controller {
       // some
     }
 
-    console.log('contentUrl: ', contentUrl);
     let opt = {
-      title: windowTitle
+      title: windowTitle, // 窗口标题
+      width: 400, // 默认宽度
+      height: 300, // 默认高度
+      x: 750, //x轴偏移量
+      y:300, // y轴偏移量
+      minHeight: 300, //最小高度
+      maxHeight: 300, // 最大高度
+      maxWidth: 400, // 最大宽度
+      minWidth:400, // 最小宽度
+      alwaysOnTop: true, // 是否在一直保存在所有应用上层
+      center :true, // 是否默认在屏幕中间
+      minimizable: false, // 是否可以最小化
+      maximizable: false, // 是否可以最大化
+      fullscreen: false, // 是否全屏
+      autoHideMenuBar:true //是否显示菜单
     }
     const win = Addon.get('window').create(windowName, opt);
-    const winContentsId = win.webContents.id;
 
+    const winContentsId = win.webContents.id;
     // load page
     win.loadURL(contentUrl);
 

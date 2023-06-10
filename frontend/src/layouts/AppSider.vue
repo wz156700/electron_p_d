@@ -26,6 +26,7 @@
 </template>
 <script>
 import { ipcApiRoute, specialIpcRoute } from "@/api/main";
+
 export default {
   name: "AppSider",
   data() {
@@ -80,13 +81,12 @@ export default {
       if (linkInfo.pageName == "windowManagement") {
         this.createWindow("0");
       } else {
-        console.log("[home] load page:", linkInfo.pageName);
         this.$router.push({ name: linkInfo.pageName, params: linkInfo.params });
       }
     },
     createWindow(index) {
       this.$ipc
-        .invoke(ipcApiRoute.createWindow, this.views[index])
+        .invoke(ipcApiRoute.createWindow, JSON.stringify(this.views[index]))
         .then((id) => {
           console.log("[createWindow] id:", id);
         });

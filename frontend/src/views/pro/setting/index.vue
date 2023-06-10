@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="setting-containner">
     <a-page-header
       style="border: 1px solid rgb(235, 237, 240)"
       title="设置详细"
@@ -19,27 +19,19 @@
           </a-radio-group>
         </a-form-model-item>
         <section class="portStyle">
-          <a-form-model-item
-            label="启动端口"
-            :wrapper-col="{ span: 14, offset: 0 }"
-            prop="startPort"
-          >
-            <a-input
-              :value="form.startPort"
-              :allowClear="true"
-              @change="startPortChange"
-            />
-            <a-checkbox v-model="form.defaultStart"> 默认启动 </a-checkbox>
+          <a-form-model-item label="启动端口" prop="startPort">
+            <!-- <a-input :value="form.startPort" @input="startPortChange" /> -->
+            <a-input v-model="form.startPort" allowClear="true" />
           </a-form-model-item>
         </section>
 
-        <a-form-model-item label="工牌页面地">
+        <a-form-model-item label="工牌页面地址">
           <a-input v-model="form.badge" />
         </a-form-model-item>
-        <a-form-model-item label="暂停页面地">
+        <a-form-model-item label="暂停页面地址">
           <a-input v-model="form.pause" />
         </a-form-model-item>
-        <a-form-model-item label="排队页面地">
+        <a-form-model-item label="排队页面地址">
           <a-input v-model="form.queue" />
         </a-form-model-item>
         <a-form-model-item label="工牌APP名">
@@ -64,6 +56,19 @@
 <script>
 export default {
   data() {
+    // 自定义校验函数
+    let validatePort = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入端口号！"));
+      }
+      if (isNaN(new Number(value))) {
+        callback(new Error("端口号必须为数字！"));
+      } else {
+        callback();
+      }
+    };
+
+    // 返回值
     return {
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
@@ -78,12 +83,12 @@ export default {
         pauseApp: undefined,
         queueApp: undefined,
       },
+
+      // 表单校验规则
       rules: {
         startPort: [
           {
-            type: "number",
-            required: true,
-            message: "输入内容必须是数字",
+            validator: validatePort,
             trigger: "change",
           },
         ],
@@ -100,45 +105,18 @@ export default {
           alert("submit!");
         } else {
           console.log("error submit!!");
-          return false;
         }
       });
     },
     // 取消
     oncancel() {
       this.$refs.ruleForm.resetFields();
-      for (let key in this.form) {
-        if (Object.hasOwnProperty.call(this.form, key)) {
-          if (key == "autoStart") {
-            this.form[key] = "1";
-          } else if (key === "startPort") {
-            this.form[key] = "80";
-          } else {
-            this.form[key] = undefined;
-          }
-        }
-      }
-    },
-
-    startPortChange(e) {
-      let value = e.target.value;
-      if (!isNaN(new Number(value))) {
-        this.form.startPort = parseInt(80);
-      } else {
-        this.form.startPort = value;
-      }
     },
   },
 };
 </script>
 <style lang="less" scoped>
-.portStyle {
-  .ant-input-affix-wrapper {
-    width: 78%;
-  }
-
-  .ant-checkbox-wrapper {
-    margin-left: 2% !important;
-  }
+.setting-containner {
+  background: white;
 }
 </style>
