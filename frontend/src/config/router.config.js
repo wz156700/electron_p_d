@@ -10,13 +10,14 @@ const RouteView = {
 }
 
 export const constantRouterMap = [
+
   {
     path: '/',
     component: AppSider,
     children: [
       {
         path: '/pro',
-        name: 'Example',
+        name: 'pro',
         component: RouteView,
         // redirect: { name: 'ExampleHelloIndex' },
         children: [
